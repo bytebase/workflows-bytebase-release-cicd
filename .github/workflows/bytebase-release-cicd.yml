@@ -1,0 +1,57 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bytebase-cicd:
+    runs-on: ubuntu-latest
+    env:
+      BYTEBASE_URL: 'https://6ef3-62-192-175-167.ngrok-free.app'
+      BYTEBASE_PROJECT: 'projects/db333'
+      BYTEBASE_SERVICE_ACCOUNT: 'cicd_srv@service.bytebase.com'
+      BYTEBASE_TARGETS: 'instances/dbdbdb/databases/db_1,instances/dbdbdb/databases/db_101,instances/dbdbdb/databases/db_103'
+      FILE_PATTERN: 'migrations/*.sql'
+    name: Bytebase cicd
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Bytebase
+        id: login
+        uses: bytebase/login-action@main
+        with:
+          url: ${{ env.BYTEBASE_URL }}
+          service-account: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
+          service-account-key: ${{ secrets.BYTEBASE_PASSWORD }}
+      - name: Create release
+        id: create_release
+        uses: bytebase/actions-create-release@main
+        with:
+          url: ${{ env.BYTEBASE_URL }}
+          token: ${{ steps.login.outputs.token }}
+          project: ${{ env.BYTEBASE_PROJECT }}
+          file-pattern: ${{ env.FILE_PATTERN }}
+      - name: Create plan
+        id: create_plan
+        uses: bytebase/actions-create-plan-from-release@main
+        with:
+          url: ${{ env.BYTEBASE_URL }}
+          token: ${{ steps.login.outputs.token }}
+          project: ${{ env.BYTEBASE_PROJECT }}
+          release: ${{ steps.create_release.outputs.release }}
+          targets: ${{ env.BYTEBASE_TARGETS }}
+      - name: Create rollout
+        id: create_rollout
+        uses: bytebase/actions-create-rollout@main
+        with:
+          url: ${{ env.BYTEBASE_URL }}
+          token: ${{ steps.login.outputs.token }}
+          project: ${{ env.BYTEBASE_PROJECT }}
+          plan: ${{ steps.create_plan.outputs.plan }}
+      - name: Wait rollout to finish
+        id: wait_rollout
+        uses: bytebase/actions-wait-rollout@main
+        with:
+          url: ${{ env.BYTEBASE_URL }}
+          token: ${{ steps.login.outputs.token }}
+          rollout: ${{ steps.create_rollout.outputs.rollout }}

@@ -23,9 +23,9 @@ jobs:
         id: login
         uses: bytebase/login-action@main
         with:
-          url: ${{ env.BYTEBASE_URL }}
-          service-account: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
-          service-account-key: ${{ secrets.BYTEBASE_PASSWORD }}
+          bytebase-url: ${{ env.BYTEBASE_URL }}
+          service-key: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
+          service-secret: ${{ secrets.BYTEBASE_PASSWORD }}
       - name: Create release
         id: create_release
         uses: bytebase/actions-create-release@main

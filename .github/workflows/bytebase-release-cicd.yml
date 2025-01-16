@@ -43,6 +43,8 @@ jobs:
           project: ${{ env.BYTEBASE_PROJECT }}
           release: ${{ steps.create_release.outputs.release }}
           targets: ${{ env.BYTEBASE_TARGETS }}
+          # fail the action if plan checks report error.
+          check-plan: FAIL_ON_ERROR
       - name: Wait rollout to finish
         id: wait_rollout
         uses: bytebase/actions-wait-rollout@main

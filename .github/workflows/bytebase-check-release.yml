@@ -9,10 +9,10 @@ jobs:
   bytebase-cicd:
     runs-on: ubuntu-latest
     env:
-      BYTEBASE_URL: 'https://valid-just-tadpole.ngrok-free.app'
-      BYTEBASE_PROJECT: 'projects/project-sample'
-      BYTEBASE_SERVICE_ACCOUNT: 'api-example@service.bytebase.com'
-      BYTEBASE_TARGETS: 'instances/test-sample-instance/databases/hr_test,instances/prod-sample-instance/databases/hr_prod'
+      BYTEBASE_URL: 'https://6ef3-62-192-175-167.ngrok-free.app'
+      BYTEBASE_PROJECT: 'projects/db333'
+      BYTEBASE_SERVICE_ACCOUNT: 'cicd_srv@service.bytebase.com'
+      BYTEBASE_TARGETS: 'instances/dbdbdb/databases/db_1,instances/dbdbdb/databases/db_101,instances/dbdbdb/databases/db_103'
       FILE_PATTERN: 'migrations/*.sql'
     name: Bytebase cicd
     steps:

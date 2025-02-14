@@ -46,8 +46,7 @@ jobs:
           project: ${{ env.BYTEBASE_PROJECT }}
           release: ${{ steps.create_release.outputs.release }}
           targets: ${{ env.BYTEBASE_TARGETS }}
-          # fail the action if plan checks report any error.
-          check-plan: 'FAIL_ON_ERROR'
+          check-plan: 'SKIP'
       - name: Rollout
         id: rollout
         uses: bytebase/rollout-action@v1

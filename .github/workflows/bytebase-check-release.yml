@@ -8,12 +8,16 @@ on:
 jobs:
   bytebase-cicd:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
     env:
-      BYTEBASE_URL: 'https://6ef3-62-192-175-167.ngrok-free.app'
-      BYTEBASE_PROJECT: 'projects/db333'
-      BYTEBASE_SERVICE_ACCOUNT: 'cicd_srv@service.bytebase.com'
-      BYTEBASE_TARGETS: 'instances/dbdbdb/databases/db_1,instances/dbdbdb/databases/db_101,instances/dbdbdb/databases/db_103'
-      FILE_PATTERN: 'migrations/*.sql'
+      BYTEBASE_URL: "https://demo.bytebase.com"
+      BYTEBASE_SERVICE_ACCOUNT: "ci@service.bytebase.com"
+      BYTEBASE_PROJECT: "projects/project-sample"
+      BYTEBASE_TARGETS: "instances/test-sample-instance/databases/hr_test"
+      FILE_PATTERN: "migrations/*.sql"
     name: Bytebase cicd
     steps:
       - name: Checkout
@@ -24,16 +28,18 @@ jobs:
         with:
           bytebase-url: ${{ env.BYTEBASE_URL }}
           service-key: ${{ env.BYTEBASE_SERVICE_ACCOUNT }}
-          service-secret: ${{ secrets.BYTEBASE_PASSWORD }}
-      - name: sql review
+          service-secret: "bbs_iqysPHMqhNpG4rQ5SFEJ" # Please use secrets for sensitive data in production.
+      - name: SQL review
         id: sql_review
         uses: bytebase/create-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           url: ${{ env.BYTEBASE_URL }}
           token: ${{ steps.login.outputs.token }}
-          project: ${{ env.BYTEBASE_PROJECT }}
           file-pattern: ${{ env.FILE_PATTERN }}
           # fail the action if release checks report any error.
-          check-release: 'FAIL_ON_ERROR'
+          check-release: "FAIL_ON_ERROR"
+          project: ${{ env.BYTEBASE_PROJECT }}
           targets: ${{ env.BYTEBASE_TARGETS }}
           validate-only: true

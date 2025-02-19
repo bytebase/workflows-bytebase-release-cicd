@@ -1,1 +1,1 @@
-ALTER TABLE employees ADD COLUMN phone TEXT;
+ALTER TABLE employee ADD COLUMN phone TEXT;

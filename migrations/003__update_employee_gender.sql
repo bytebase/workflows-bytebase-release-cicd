@@ -1,0 +1,1 @@
+UPDATE employee SET gender = 'M' WHERE emp_no < 10011;

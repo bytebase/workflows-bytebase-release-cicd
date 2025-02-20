@@ -1,4 +1,7 @@
 # About
+
+Corresponding Tutorial: [Database Release CI/CD with GitHub Actions](http://bytebase.com/docs/tutorials/github-release-cicd-workflow/)
+
 This repository contains example workflows demonstrating a GitOps database CI/CD workflow via GitHub Actions and Bytebase.
 
 When a new pull request is opened, the [check-release](./.github/workflows/bytebase-check-release.yml) workflow checks the new migration files against the target databases.
